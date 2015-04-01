@@ -117,5 +117,28 @@ public class smoothing extends JFrame {
         }
         g.dispose();
 	}
+	
+	
+	// code for gaussian blur
+	// source channel, target channel, width, height, radius
+		public void gaussBlur_1(BufferedImage orig, BufferedImage copy) {
+			double r = 3.1415;
+			int h = 10;
+			int w = 20;
+		    double rs = Math.ceil(r * 2.57);   // significant radius
+		    for(int i=0; i<h; i++)
+		        for(int j=0; j<w; j++) {
+		            int val = 0, wsum = 0;
+		            for(double iy = i-rs; iy<i+rs+1; iy++)
+		                for(double ix = j-rs; ix<j+rs+1; ix++) {
+		                    double x = Math.min(w-1, Math.max(0, ix));
+		                    double y = Math.min(h-1, Math.max(0, iy));
+		                    double dsq = (ix-j)*(ix-j)+(iy-i)*(iy-i);
+		                    double wght = Math.exp( -dsq / (2*r*r) ) / (Math.PI*2*r*r);
+		                    //val += orig[y*w+x] * wght;  wsum += wght;
+		                }
+		            //copy[i*w+j] = Math.round(val/wsum);            
+		        }
+		}
 
 }
