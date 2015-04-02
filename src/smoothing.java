@@ -141,38 +141,31 @@ public class smoothing extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		BufferedImage smoothingPartSource;
 		BufferedImage smoothingPartTarget;
+		BufferedImage smoothingTarget = final_img;
+		BufferedImage enlargeTarget;
 		
 		if(e.getSource() == btnProcess){
 			try{
+				/*Gaussian Blur*/
 				smoothingPartSource = final_img.getSubimage(captureRect.x, captureRect.y, captureRect.width, captureRect.height);
-				//smoothingPartTarget = new BufferedImage(smoothingPartSource.getWidth(),smoothingPartSource.getHeight(),smoothingPartSource.getType());
-			
-			/*-------Gaussian Blur function------*/
-				int r = 10;
-				double rs = Math.ceil(r * 2.57);
-				int w = smoothingPartSource.getWidth();
-				int h = smoothingPartSource.getHeight();
-				for(int i=0; i<h; i++)
-					for(int j=0; j<w; i++){
-//						double val =0, wsum = 0;
-//						for(int iy = (int)(i-rs); iy < i+rs+1; iy++)
-//							for(int ix = (int)(j-rs); ix < j+rs+1; ix++){
-//								int x = Math.min(w-1, Math.max(0, ix));
-//								int y = Math.min(h-1, Math.max(0, iy));
-//								double dsq = (ix-j)*(ix-j)+(iy-i)*(iy-i);
-//								double wght = Math.exp(-dsq / (2*r*r) ) / (Math.PI*2*r*r);
-//								val += smoothingPartSource.getRGB(x, y) * wght; 
-//								wsum += wght;
-//							}
-							
-//						smoothingPartTarget.setRGB(j, i, (int)Math.round(val/wsum));
-						
-//						smoothingPartSource.setRGB(j, i, smoothingPartSource.getRGB(j, i));
+				GaussianBlur GB = new GaussianBlur();
+				smoothingPartTarget = GB.gaussianBlur(smoothingPartSource, 1.4);
+				
+				int w = smoothingPartTarget.getWidth();
+				int h = smoothingPartTarget.getHeight();
+				
+				/*put partTarget back to Target*/
+				for(int i=0 ; i < w; i++){
+					for(int j=0 ; j < h; j++){
+						smoothingTarget.setRGB(captureRect.x + i, captureRect.y + j, smoothingPartTarget.getRGB(i, j));
 					}
+				}
 				
+				/*enlarge this smoothed image*/
+				Enlarge E = new Enlarge(smoothingTarget,2);
+				enlargeTarget = E.enlarge();
 				
-				//System.out.println(smoothingPartSource.getRGB(0, 0));
-			lblPicture.setIcon(new ImageIcon(smoothingPartSource));
+			lblPicture.setIcon(new ImageIcon(enlargeTarget));
 			}catch(RasterFormatException d){
 				JOptionPane.showMessageDialog(null, "please select an area first");
 			}
