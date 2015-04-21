@@ -41,15 +41,20 @@ public class UI extends JFrame implements ActionListener, ItemListener {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			
 			public void run() {
+				//long startTime = System.nanoTime();
 				try {
 					UI window = new UI();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				//long totalTime = (System.nanoTime() - startTime)/1000000;
+				//System.out.println("\nUI: " + totalTime + "ms");
 			}
 		});
+		
 	}
 
 	/**

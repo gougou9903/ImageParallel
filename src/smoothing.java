@@ -145,6 +145,7 @@ public class smoothing extends JFrame implements ActionListener{
 		BufferedImage enlargeTarget;
 		
 		if(e.getSource() == btnProcess){
+			long startTime = System.nanoTime();
 			try{
 				/*Gaussian Blur*/
 				smoothingPartSource = final_img.getSubimage(captureRect.x, captureRect.y, captureRect.width, captureRect.height);
@@ -170,8 +171,11 @@ public class smoothing extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(null, "please select an area first");
 			}
 			
+			long totalTime = (System.nanoTime() - startTime)/1000000;
+			System.out.println("\nSmoothing and Enlarging: " + totalTime + "ms");
 			
 			}
+		
 	}
 
 
