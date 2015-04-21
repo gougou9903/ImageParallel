@@ -146,6 +146,8 @@ public class smoothing extends JFrame implements ActionListener{
 		
 		if(e.getSource() == btnProcess){
 			try{
+				long start = System.currentTimeMillis();
+				
 				/*Gaussian Blur*/
 				smoothingPartSource = final_img.getSubimage(captureRect.x, captureRect.y, captureRect.width, captureRect.height);
 				GaussianBlur GB = new GaussianBlur();
@@ -166,6 +168,10 @@ public class smoothing extends JFrame implements ActionListener{
 				enlargeTarget = E.enlarge();
 				
 			lblPicture.setIcon(new ImageIcon(enlargeTarget));
+			
+			long time = System.currentTimeMillis() - start;
+			System.out.println("Smoothing and enlarging time: "+time+ " ms");
+			
 			}catch(RasterFormatException d){
 				JOptionPane.showMessageDialog(null, "please select an area first");
 			}
