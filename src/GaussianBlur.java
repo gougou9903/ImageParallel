@@ -64,77 +64,23 @@ public class GaussianBlur {
         
         
         thread[0] = new Thread1();
+        thread[1] = new Thread2();
+        thread[2] = new Thread3();
+        thread[3] = new Thread4();
+        
         thread[0].start();
+        thread[1].start();
+        thread[2].start();
+        thread[3].start();
+        
         thread[0].join();
+        thread[1].join();
+        thread[2].join();
+        thread[3].join();
         
-        for (int i = width/2; i < width; i++) {
-            for (int j = 0; j < height/2; j++) {
-            	double sum = 0;
-                double[] colorRgbArray = new double[]{0, 0, 0};
-                
-                for (int k = 0; k < window.length; k++) {
-                    int l = i + k - (n - 1) / 2;
-                    if (l >= 0 && l < width) {
-                        Color imageColor = new Color(image.getRGB(l, j));
-                        colorRgbArray[0] = colorRgbArray[0] + imageColor.getRed() * window[k];
-                        colorRgbArray[1] = colorRgbArray[1] + imageColor.getGreen() * window[k];
-                        colorRgbArray[2] = colorRgbArray[2] + imageColor.getBlue() * window[k];
-                        sum += window[k];
-                    }
-                }
-                for (int t = 0; t < 3; t++) {
-                    colorRgbArray[t] = colorRgbArray[t] / sum;
-                }
-                Color tmpColor = new Color((int) colorRgbArray[0], (int) colorRgbArray[1], (int) colorRgbArray[2]);
-                tempImage.setRGB(i, j, tmpColor.getRGB());
-            }
-        } 
         
-        for (int i = 0; i < width/2; i++) {
-            for (int j = height/2; j < height; j++) {
-            	double sum = 0;
-                double[] colorRgbArray = new double[]{0, 0, 0};
-                
-                for (int k = 0; k < window.length; k++) {
-                    int l = i + k - (n - 1) / 2;
-                    if (l >= 0 && l < width) {
-                        Color imageColor = new Color(image.getRGB(l, j));
-                        colorRgbArray[0] = colorRgbArray[0] + imageColor.getRed() * window[k];
-                        colorRgbArray[1] = colorRgbArray[1] + imageColor.getGreen() * window[k];
-                        colorRgbArray[2] = colorRgbArray[2] + imageColor.getBlue() * window[k];
-                        sum += window[k];
-                    }
-                }
-                for (int t = 0; t < 3; t++) {
-                    colorRgbArray[t] = colorRgbArray[t] / sum;
-                }
-                Color tmpColor = new Color((int) colorRgbArray[0], (int) colorRgbArray[1], (int) colorRgbArray[2]);
-                tempImage.setRGB(i, j, tmpColor.getRGB());
-            }
-        }
         
-        for (int i = width/2; i < width; i++) {
-            for (int j = height/2; j < height; j++) {
-            	double sum = 0;
-                double[] colorRgbArray = new double[]{0, 0, 0};
-                
-                for (int k = 0; k < window.length; k++) {
-                    int l = i + k - (n - 1) / 2;
-                    if (l >= 0 && l < width) {
-                        Color imageColor = new Color(image.getRGB(l, j));
-                        colorRgbArray[0] = colorRgbArray[0] + imageColor.getRed() * window[k];
-                        colorRgbArray[1] = colorRgbArray[1] + imageColor.getGreen() * window[k];
-                        colorRgbArray[2] = colorRgbArray[2] + imageColor.getBlue() * window[k];
-                        sum += window[k];
-                    }
-                }
-                for (int t = 0; t < 3; t++) {
-                    colorRgbArray[t] = colorRgbArray[t] / sum;
-                }
-                Color tmpColor = new Color((int) colorRgbArray[0], (int) colorRgbArray[1], (int) colorRgbArray[2]);
-                tempImage.setRGB(i, j, tmpColor.getRGB());
-            }
-        }
+        
         
         
         //--->>
@@ -191,4 +137,91 @@ public class GaussianBlur {
         System.out.println("Thread1");
     	}
     }
+    
+    
+    class Thread2 extends Thread{
+    	public void run() {
+    		for (int i = width/2; i < width; i++) {
+                for (int j = 0; j < height/2; j++) {
+                	double sum = 0;
+                    double[] colorRgbArray = new double[]{0, 0, 0};
+                    
+                    for (int k = 0; k < window.length; k++) {
+                        int l = i + k - (n - 1) / 2;
+                        if (l >= 0 && l < width) {
+                            Color imageColor = new Color(bufferImage.getRGB(l, j));
+                            colorRgbArray[0] = colorRgbArray[0] + imageColor.getRed() * window[k];
+                            colorRgbArray[1] = colorRgbArray[1] + imageColor.getGreen() * window[k];
+                            colorRgbArray[2] = colorRgbArray[2] + imageColor.getBlue() * window[k];
+                            sum += window[k];
+                        }
+                    }
+                    for (int t = 0; t < 3; t++) {
+                        colorRgbArray[t] = colorRgbArray[t] / sum;
+                    }
+                    Color tmpColor = new Color((int) colorRgbArray[0], (int) colorRgbArray[1], (int) colorRgbArray[2]);
+                    tempImage.setRGB(i, j, tmpColor.getRGB());
+                }
+            }
+    		System.out.println("Thread2");
+    	}
+    }
+    
+    class Thread3 extends Thread{
+    	public void run(){
+    		for (int i = 0; i < width/2; i++) {
+                for (int j = height/2; j < height; j++) {
+                	double sum = 0;
+                    double[] colorRgbArray = new double[]{0, 0, 0};
+                    
+                    for (int k = 0; k < window.length; k++) {
+                        int l = i + k - (n - 1) / 2;
+                        if (l >= 0 && l < width) {
+                            Color imageColor = new Color(bufferImage.getRGB(l, j));
+                            colorRgbArray[0] = colorRgbArray[0] + imageColor.getRed() * window[k];
+                            colorRgbArray[1] = colorRgbArray[1] + imageColor.getGreen() * window[k];
+                            colorRgbArray[2] = colorRgbArray[2] + imageColor.getBlue() * window[k];
+                            sum += window[k];
+                        }
+                    }
+                    for (int t = 0; t < 3; t++) {
+                        colorRgbArray[t] = colorRgbArray[t] / sum;
+                    }
+                    Color tmpColor = new Color((int) colorRgbArray[0], (int) colorRgbArray[1], (int) colorRgbArray[2]);
+                    tempImage.setRGB(i, j, tmpColor.getRGB());
+                }
+            }
+    		System.out.println("Thread3");
+    	}
+    }
+    
+    class Thread4 extends Thread{
+    	public void run(){
+    		for (int i = width/2; i < width; i++) {
+                for (int j = height/2; j < height; j++) {
+                	double sum = 0;
+                    double[] colorRgbArray = new double[]{0, 0, 0};
+                    
+                    for (int k = 0; k < window.length; k++) {
+                        int l = i + k - (n - 1) / 2;
+                        if (l >= 0 && l < width) {
+                            Color imageColor = new Color(bufferImage.getRGB(l, j));
+                            colorRgbArray[0] = colorRgbArray[0] + imageColor.getRed() * window[k];
+                            colorRgbArray[1] = colorRgbArray[1] + imageColor.getGreen() * window[k];
+                            colorRgbArray[2] = colorRgbArray[2] + imageColor.getBlue() * window[k];
+                            sum += window[k];
+                        }
+                    }
+                    for (int t = 0; t < 3; t++) {
+                        colorRgbArray[t] = colorRgbArray[t] / sum;
+                    }
+                    Color tmpColor = new Color((int) colorRgbArray[0], (int) colorRgbArray[1], (int) colorRgbArray[2]);
+                    tempImage.setRGB(i, j, tmpColor.getRGB());
+                }
+            }
+    		System.out.println("Thread4");
+    	}
+    }
+    
+    
 }
