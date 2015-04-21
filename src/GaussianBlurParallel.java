@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 
-public class GaussianBlur {
+public class GaussianBlurParallel {
 		private final static int THREADS = 4;
 		Thread[] thread = new Thread[THREADS];
 		int height;
