@@ -3,21 +3,31 @@ import java.awt.image.BufferedImage;
 
 
 public class GaussianBlur {
+		private final static int THREADS = 4;
+		Thread[] thread = new Thread[THREADS];
+		int height;
+		int width;
+		int n;
+		BufferedImage bufferImage;
+		BufferedImage tempImage;
+		
+		double[] window;
 
-    public BufferedImage gaussianBlur(BufferedImage image,double sigma) {
+    public BufferedImage gaussianBlur(BufferedImage image,double sigma) throws InterruptedException {
+    	
+    	this.bufferImage = image;
+        this.height = image.getHeight(null);
+        this.width = image.getWidth(null);
 
-        int height = image.getHeight(null);
-        int width = image.getWidth(null);
-
-        BufferedImage tempImage = new BufferedImage(width, height,
+        tempImage = new BufferedImage(width, height,
                 BufferedImage.TYPE_INT_RGB);
         BufferedImage filteredImage = new BufferedImage(width, height,
                 BufferedImage.TYPE_INT_RGB);
 
         //--->>
-        int n = (int) (6 * sigma + 1);
+        n = (int) (6 * sigma + 1);
 
-        double[] window = new double[n];
+        window = new double[n];
         double s2 = 2 * sigma * sigma;
 
         window[(n - 1) / 2] = 1;
@@ -27,10 +37,64 @@ public class GaussianBlur {
         }
 
         //--->>
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                double sum = 0;
+//        for (int i = 0; i < width; i++) {
+//            for (int j = 0; j < height; j++) {
+//                double sum = 0;
+//                double[] colorRgbArray = new double[]{0, 0, 0};
+//                for (int k = 0; k < window.length; k++) {
+//                    int l = i + k - (n - 1) / 2;
+//                    if (l >= 0 && l < width) {
+//                        Color imageColor = new Color(image.getRGB(l, j));
+//                        colorRgbArray[0] = colorRgbArray[0] + imageColor.getRed() * window[k];
+//                        colorRgbArray[1] = colorRgbArray[1] + imageColor.getGreen() * window[k];
+//                        colorRgbArray[2] = colorRgbArray[2] + imageColor.getBlue() * window[k];
+//                        sum += window[k];
+//                    }
+//                }
+//                for (int t = 0; t < 3; t++) {
+//                    colorRgbArray[t] = colorRgbArray[t] / sum;
+//                }
+//                Color tmpColor = new Color((int) colorRgbArray[0], (int) colorRgbArray[1], (int) colorRgbArray[2]);
+//                tempImage.setRGB(i, j, tmpColor.getRGB());
+//            }
+//        }
+        
+        
+        
+        
+        
+        thread[0] = new Thread1();
+        thread[0].start();
+        thread[0].join();
+        
+        for (int i = width/2; i < width; i++) {
+            for (int j = 0; j < height/2; j++) {
+            	double sum = 0;
                 double[] colorRgbArray = new double[]{0, 0, 0};
+                
+                for (int k = 0; k < window.length; k++) {
+                    int l = i + k - (n - 1) / 2;
+                    if (l >= 0 && l < width) {
+                        Color imageColor = new Color(image.getRGB(l, j));
+                        colorRgbArray[0] = colorRgbArray[0] + imageColor.getRed() * window[k];
+                        colorRgbArray[1] = colorRgbArray[1] + imageColor.getGreen() * window[k];
+                        colorRgbArray[2] = colorRgbArray[2] + imageColor.getBlue() * window[k];
+                        sum += window[k];
+                    }
+                }
+                for (int t = 0; t < 3; t++) {
+                    colorRgbArray[t] = colorRgbArray[t] / sum;
+                }
+                Color tmpColor = new Color((int) colorRgbArray[0], (int) colorRgbArray[1], (int) colorRgbArray[2]);
+                tempImage.setRGB(i, j, tmpColor.getRGB());
+            }
+        } 
+        
+        for (int i = 0; i < width/2; i++) {
+            for (int j = height/2; j < height; j++) {
+            	double sum = 0;
+                double[] colorRgbArray = new double[]{0, 0, 0};
+                
                 for (int k = 0; k < window.length; k++) {
                     int l = i + k - (n - 1) / 2;
                     if (l >= 0 && l < width) {
@@ -48,16 +112,16 @@ public class GaussianBlur {
                 tempImage.setRGB(i, j, tmpColor.getRGB());
             }
         }
-
-        //--->>
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                double sum = 0;
+        
+        for (int i = width/2; i < width; i++) {
+            for (int j = height/2; j < height; j++) {
+            	double sum = 0;
                 double[] colorRgbArray = new double[]{0, 0, 0};
+                
                 for (int k = 0; k < window.length; k++) {
-                    int l = j + k - (n - 1) / 2;
-                    if (l >= 0 && l < height) {
-                        Color imageColor = new Color(tempImage.getRGB(i, l));
+                    int l = i + k - (n - 1) / 2;
+                    if (l >= 0 && l < width) {
+                        Color imageColor = new Color(image.getRGB(l, j));
                         colorRgbArray[0] = colorRgbArray[0] + imageColor.getRed() * window[k];
                         colorRgbArray[1] = colorRgbArray[1] + imageColor.getGreen() * window[k];
                         colorRgbArray[2] = colorRgbArray[2] + imageColor.getBlue() * window[k];
@@ -68,10 +132,63 @@ public class GaussianBlur {
                     colorRgbArray[t] = colorRgbArray[t] / sum;
                 }
                 Color tmpColor = new Color((int) colorRgbArray[0], (int) colorRgbArray[1], (int) colorRgbArray[2]);
+                tempImage.setRGB(i, j, tmpColor.getRGB());
+            }
+        }
+        
+        
+        //--->>
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                double sum2 = 0;
+                double[] colorRgbArray2 = new double[]{0, 0, 0};
+                for (int k = 0; k < window.length; k++) {
+                    int l = j + k - (n - 1) / 2;
+                    if (l >= 0 && l < height) {
+                        Color imageColor = new Color(tempImage.getRGB(i, l));
+                        colorRgbArray2[0] = colorRgbArray2[0] + imageColor.getRed() * window[k];
+                        colorRgbArray2[1] = colorRgbArray2[1] + imageColor.getGreen() * window[k];
+                        colorRgbArray2[2] = colorRgbArray2[2] + imageColor.getBlue() * window[k];
+                        sum2 += window[k];
+                    }
+                }
+                for (int t = 0; t < 3; t++) {
+                    colorRgbArray2[t] = colorRgbArray2[t] / sum2;
+                }
+                Color tmpColor = new Color((int) colorRgbArray2[0], (int) colorRgbArray2[1], (int) colorRgbArray2[2]);
                 filteredImage.setRGB(i, j, tmpColor.getRGB());
             }
         }
 
         return filteredImage;
+    }
+    
+    class Thread1 extends Thread{
+    	
+    	public void run() {
+        for (int i = 0; i < width/2; i++) {
+          for (int j = 0; j < height/2; j++) {
+        	  double sum = 0;
+              double[] colorRgbArray = new double[]{0, 0, 0};
+              
+              for (int k = 0; k < window.length; k++) {
+                  int l = i + k - (n - 1) / 2;
+                  if (l >= 0 && l < width) {
+                      Color imageColor = new Color(bufferImage.getRGB(l, j));
+                      colorRgbArray[0] = colorRgbArray[0] + imageColor.getRed() * window[k];
+                      colorRgbArray[1] = colorRgbArray[1] + imageColor.getGreen() * window[k];
+                      colorRgbArray[2] = colorRgbArray[2] + imageColor.getBlue() * window[k];
+                      sum += window[k];
+                  }
+              }
+              for (int t = 0; t < 3; t++) {
+                  colorRgbArray[t] = colorRgbArray[t] / sum;
+              }
+              Color tmpColor = new Color((int) colorRgbArray[0], (int) colorRgbArray[1], (int) colorRgbArray[2]);
+              tempImage.setRGB(i, j, tmpColor.getRGB());
+          }
+      }
+        System.out.println("Thread1");
+    	}
     }
 }

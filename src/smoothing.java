@@ -174,6 +174,9 @@ public class smoothing extends JFrame implements ActionListener{
 			
 			}catch(RasterFormatException d){
 				JOptionPane.showMessageDialog(null, "please select an area first");
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			
 			
