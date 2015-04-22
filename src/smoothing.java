@@ -41,7 +41,7 @@ public class smoothing extends JFrame implements ActionListener{
 	 * Create the frame.
 	 */
 	public smoothing(String imgPath) {
-		setBounds(100, 100, 800, 600);
+		setBounds(100, 100, 1200, 750);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -73,17 +73,17 @@ public class smoothing extends JFrame implements ActionListener{
 		lblPicture.setIcon(new ImageIcon(screenCopy));
 		
 		JScrollPane screenScroll = new JScrollPane(lblPicture);   // Scroll Pane stores the image label
-		screenScroll.setBounds(6,6,661,476);
+		screenScroll.setBounds(6,6,1188,640);
 		
 		contentPane.add(screenScroll);
 		
 		JLabel lblSelection = new JLabel("Drag a rectangle to be smoothed"); // information label
-		lblSelection.setBounds(29, 498, 592, 50);
+		lblSelection.setBounds(23, 658, 592, 50);
 		contentPane.add(lblSelection);
 		
 		btnProcess = new JButton("Process");  // process button
 		btnProcess.addActionListener(this);
-		btnProcess.setBounds(654, 526, 117, 29);
+		btnProcess.setBounds(1077, 670, 117, 29);
 		contentPane.add(btnProcess);
 		
 		
@@ -150,7 +150,7 @@ public class smoothing extends JFrame implements ActionListener{
 				
 				/*Gaussian Blur*/
 				smoothingPartSource = final_img.getSubimage(captureRect.x, captureRect.y, captureRect.width, captureRect.height);
-				GaussianBlurParallel GB = new GaussianBlurParallel();
+				GaussianBlur GB = new GaussianBlur();
 				smoothingPartTarget = GB.gaussianBlur(smoothingPartSource, 1.4);
 				
 				int w = smoothingPartTarget.getWidth();
@@ -164,7 +164,8 @@ public class smoothing extends JFrame implements ActionListener{
 				}
 				
 				/*enlarge this smoothed image*/
-				Enlarge E = new Enlarge(smoothingTarget,2);
+				float ratio = 2f;
+				Enlarge E = new Enlarge(smoothingTarget,ratio);
 				enlargeTarget = E.enlarge();
 				
 			lblPicture.setIcon(new ImageIcon(enlargeTarget));
@@ -174,10 +175,12 @@ public class smoothing extends JFrame implements ActionListener{
 			
 			}catch(RasterFormatException d){
 				JOptionPane.showMessageDialog(null, "please select an area first");
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			} 
+			
+//			catch (InterruptedException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
 			
 			
 			}
