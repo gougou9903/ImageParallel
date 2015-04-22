@@ -171,8 +171,6 @@ public class smoothing extends JFrame implements ActionListener{
 				
 			lblPicture.setIcon(new ImageIcon(enlargeTarget));
 			
-			long time = System.currentTimeMillis() - start;
-			System.out.println("Smoothing and enlarging time: "+time+ " ms");
 			
 			}catch(RasterFormatException d){
 				JOptionPane.showMessageDialog(null, "please select an area first");
