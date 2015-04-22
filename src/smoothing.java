@@ -145,6 +145,7 @@ public class smoothing extends JFrame implements ActionListener{
 		BufferedImage enlargeTarget;
 		
 		if(e.getSource() == btnProcess){
+			long startTime = System.nanoTime();
 			try{
 				long start = System.currentTimeMillis();
 				
@@ -182,8 +183,11 @@ public class smoothing extends JFrame implements ActionListener{
 //				e1.printStackTrace();
 //			}
 			
+			long totalTime = (System.nanoTime() - startTime)/1000000;
+			System.out.println("\nSmoothing and Enlarging: " + totalTime + "ms");
 			
 			}
+		
 	}
 
 
