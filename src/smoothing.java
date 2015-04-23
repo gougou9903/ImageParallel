@@ -36,11 +36,14 @@ public class smoothing extends JFrame implements ActionListener{
 	JButton btnProcess;
 	final BufferedImage final_img;
 	final JLabel lblPicture;
+	float ratio;
 	
 	/**
 	 * Create the frame.
 	 */
-	public smoothing(String imgPath) {
+	public smoothing(String imgPath, float ratio) {
+		this.ratio = ratio;
+		
 		setBounds(100, 100, 1200, 750);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -147,11 +150,11 @@ public class smoothing extends JFrame implements ActionListener{
 		if(e.getSource() == btnProcess){
 			long startTime = System.nanoTime();
 			try{
-				long start = System.currentTimeMillis();
+				//long start = System.currentTimeMillis();
 				
 				/*Gaussian Blur*/
 				smoothingPartSource = final_img.getSubimage(captureRect.x, captureRect.y, captureRect.width, captureRect.height);
-				GaussianBlurParallel GB = new GaussianBlurParallel();
+				GaussianBlur GB = new GaussianBlur();
 				smoothingPartTarget = GB.gaussianBlur(smoothingPartSource, 1.4);
 				
 				int w = smoothingPartTarget.getWidth();
@@ -165,7 +168,7 @@ public class smoothing extends JFrame implements ActionListener{
 				}
 				
 				/*enlarge this smoothed image*/
-				float ratio = 2f;
+				
 				Enlarge E = new Enlarge(smoothingTarget,ratio);
 				enlargeTarget = E.enlarge();
 				
@@ -176,10 +179,10 @@ public class smoothing extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(null, "please select an area first");
 			} 
 			
-			catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+//			catch (InterruptedException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
 			
 			long totalTime = (System.nanoTime() - startTime)/1000000;
 			System.out.println("\nSmoothing and Enlarging: " + totalTime + "ms");

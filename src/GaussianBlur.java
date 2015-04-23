@@ -5,6 +5,9 @@ import java.awt.image.BufferedImage;
 public class GaussianBlur {
 
     public BufferedImage gaussianBlur(BufferedImage image,double sigma) {
+    	/* time test */
+    	long startTime = System.nanoTime();
+    	
 
         int height = image.getHeight(null);
         int width = image.getWidth(null);
@@ -71,7 +74,9 @@ public class GaussianBlur {
                 filteredImage.setRGB(i, j, tmpColor.getRGB());
             }
         }
-
+        long totalTime = (System.nanoTime() - startTime)/1000000;
+		System.out.println("\nSmoothing time: " + totalTime + "ms");
+		
         return filteredImage;
     }
 }
