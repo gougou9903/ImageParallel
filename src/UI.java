@@ -130,6 +130,8 @@ public class UI extends JFrame implements ActionListener, ItemListener {
             }
             lblChosenFileContent.setText(filelist);
 		}else if(e.getSource() == btnES){
+			
+			
 			if(sf.length == 1){
 			smoothing smoothing = new smoothing(sf[0].getPath());
 			System.out.println(sf[0].getPath());

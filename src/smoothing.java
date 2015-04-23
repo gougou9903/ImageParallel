@@ -151,7 +151,7 @@ public class smoothing extends JFrame implements ActionListener{
 				
 				/*Gaussian Blur*/
 				smoothingPartSource = final_img.getSubimage(captureRect.x, captureRect.y, captureRect.width, captureRect.height);
-				GaussianBlur GB = new GaussianBlur();
+				GaussianBlurParallel GB = new GaussianBlurParallel();
 				smoothingPartTarget = GB.gaussianBlur(smoothingPartSource, 1.4);
 				
 				int w = smoothingPartTarget.getWidth();
@@ -176,10 +176,10 @@ public class smoothing extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(null, "please select an area first");
 			} 
 			
-//			catch (InterruptedException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
+			catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 			long totalTime = (System.nanoTime() - startTime)/1000000;
 			System.out.println("\nSmoothing and Enlarging: " + totalTime + "ms");
