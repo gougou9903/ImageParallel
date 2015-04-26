@@ -130,8 +130,11 @@ public class UI extends JFrame implements ActionListener, ItemListener {
             }
             lblChosenFileContent.setText(filelist);
 		}else if(e.getSource() == btnES){
+			String ratio_string = textFieldER.getText();
+			float ratio_float = Float.parseFloat(ratio_string);
+			
 			if(sf.length == 1){
-			smoothing smoothing = new smoothing(sf[0].getPath());
+			smoothing smoothing = new smoothing(sf[0].getPath(),ratio_float);
 			System.out.println(sf[0].getPath());
 			smoothing.setVisible(true);
 			}else
