@@ -195,7 +195,7 @@ public class smoothing extends JFrame implements ActionListener{
 		        g.drawImage(subOutImage_out[1], subOutImage_out[0].getWidth(), 0, null);
 		        g.drawImage(subOutImage_out[2], subOutImage_out[0].getWidth()+subOutImage_out[1].getWidth(), 0, null);
 		        g.drawImage(subOutImage_out[3], subOutImage_out[0].getWidth(), outerEnlargeTarget.getHeight()-subOutImage_out[3].getHeight(), null);
-		        g.drawImage(innerEnlargeTarget, subOutImage_out[0].getWidth(),subOutImage_out[1].getHeight()+1,null);
+		        g.drawImage(innerEnlargeTarget, subOutImage_out[0].getWidth(),subOutImage_out[1].getHeight(),null);
 		        g.dispose();
 		        
 		        
